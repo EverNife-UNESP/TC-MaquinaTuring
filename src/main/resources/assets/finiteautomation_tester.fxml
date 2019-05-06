@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.FiniteAutomationTesterController">
+    <children>
+        <Pane prefHeight="696.0" prefWidth="442.0" GridPane.rowIndex="1">
+            <children>
+                <Label layoutX="19.0" layoutY="21.0" text="Testar Maquina de Estados Finitos">
+               <font>
+                  <Font name="Bell MT" size="28.0" />
+               </font></Label>
+                <TextField fx:id="diretoTextField" layoutX="72.0" layoutY="101.0" prefHeight="25.0" prefWidth="330.0" />
+                <Label layoutX="42.0" layoutY="93.0" prefHeight="40.0" prefWidth="30.0" text="➜">
+                    <font>
+                        <Font size="28.0" />
+                    </font></Label>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="83.0" layoutY="239.0" prefHeight="20.0" prefWidth="319.0" text="Teste Múltiplo (um por linha)">
+                    <font>
+                        <Font size="14.0" />
+                    </font></Label>
+                <Button layoutX="38.0" layoutY="133.0" mnemonicParsing="false" onAction="#onDireto" prefHeight="25.0" prefWidth="367.0" text="Teste Direto" />
+                <Label fx:id="diretoResult" alignment="CENTER" layoutX="38.0" layoutY="165.0" prefHeight="17.0" prefWidth="367.0" text="..." />
+            <Label alignment="CENTER" layoutX="37.0" layoutY="201.0" prefHeight="17.0" prefWidth="367.0" text="▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" />
+            <Label layoutX="42.0" layoutY="265.0" prefHeight="40.0" prefWidth="30.0" text="➜">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="multiploTextArea" layoutX="83.0" layoutY="265.0" prefHeight="111.0" prefWidth="319.0" />
+            <TextArea fx:id="multiploResult" editable="false" layoutX="83.0" layoutY="383.0" prefHeight="111.0" prefWidth="319.0" />
+            <Button layoutX="38.0" layoutY="501.0" mnemonicParsing="false" onAction="#onMultiplo" prefHeight="25.0" prefWidth="367.0" text="Teste Múltiplo" />
+            <Label alignment="CENTER" layoutX="37.0" layoutY="538.0" prefHeight="17.0" prefWidth="367.0" text="▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬" />
+            <Button fx:id="onStepBackButton" layoutX="125.0" layoutY="653.0" mnemonicParsing="false" onAction="#onStepBack" prefHeight="25.0" prefWidth="97.0" text="&lt;&lt;&lt;" textFill="#c64c4c" />
+            <Button fx:id="onStepForwardButton" layoutX="222.0" layoutY="653.0" mnemonicParsing="false" onAction="#onStepForward" prefHeight="25.0" prefWidth="97.0" text="&gt;&gt;&gt;" textFill="#6f81dd" />
+            <TextField fx:id="passoApassoTextField" layoutX="71.0" layoutY="563.0" prefHeight="25.0" prefWidth="330.0" />
+            <Label layoutX="41.0" layoutY="555.0" prefHeight="40.0" prefWidth="30.0" text="➜">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+            <Button layoutX="158.0" layoutY="595.0" mnemonicParsing="false" onAction="#onPassoAPasso" prefHeight="25.0" prefWidth="126.0" text="Teste Passo a Passo" textFill="#288a28" />
+            <Label fx:id="passoApassoResult" alignment="CENTER" layoutX="37.0" layoutY="628.0" prefHeight="17.0" prefWidth="367.0" text="..." />
+            </children>
+        </Pane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

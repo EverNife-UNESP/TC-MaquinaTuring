@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="305.0" prefWidth="253.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.states.StateEditorController">
+   <children>
+       <Button layoutX="74.0" layoutY="174.0" mnemonicParsing="false" onAction="#onSaveChanges" text="Salvar Alterações" />
+       <Label fx:id="stateIdentifier" layoutX="31.0" layoutY="68.0" prefHeight="17.0" prefWidth="172.0" text="Nome do Estado:" />
+       <CheckBox fx:id="initial" layoutX="31.0" layoutY="120.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="136.0" text="Inicial" />
+       <CheckBox fx:id="finale" layoutX="31.0" layoutY="145.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="136.0" text="Final" />
+       <TextField fx:id="state_name" layoutX="31.0" layoutY="89.0" onAction="#stateName" />
+       <Label alignment="CENTER" layoutX="7.0" layoutY="37.0" prefHeight="27.0" prefWidth="240.0" text="Editor de Estados">
+           <font>
+               <Font name="Elephant" size="19.0" />
+           </font>
+       </Label>
+      <Line endX="100.0" layoutX="127.0" layoutY="232.0" startX="-100.0" />
+      <Button layoutX="81.0" layoutY="258.0" mnemonicParsing="false" onAction="#onStateDelete" text="Apagar Estado" textFill="#fc0000" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.iml" filepath="$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.main.iml" filepath="$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.test.iml" filepath="$PROJECT_DIR$/.idea/modules/br.com.finalcraft.TC-MaquinaTuring.test.iml" />
+    </modules>
+  </component>
+</project>
