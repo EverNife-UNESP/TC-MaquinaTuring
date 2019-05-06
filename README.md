@@ -1,7 +1,7 @@
-# TC-2019-Maquina Norma
+# TC-2019-Maquina Turing
 
 
-Esse trabalho está foi construido durante o periodo letivo do primeiro semestre de 2019.
+Esse trabalho está sendo construido durante o periodo letivo do primeiro semestre de 2019.
 
 #How To
 No gradle:
