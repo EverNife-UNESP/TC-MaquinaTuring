@@ -7,6 +7,7 @@ import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Edge;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.view.MyFXMLs;
+import br.com.finalcraft.unesp.tc.myown.Sleeper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -71,6 +72,10 @@ public class AddTransitionController {
     private Label stateIdentifier;
 
     @FXML
+    private Label valueLabel;
+
+
+    @FXML
     private CheckBox initial;
 
     @FXML
@@ -78,19 +83,37 @@ public class AddTransitionController {
 
     @FXML
     void onSaveChanges(ActionEvent event) {
-        Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
-        Aresta aresta = edge.getOrCreateAresta(startVertex);
 
-        String readValue    = transaction_read.getText();
+        String readValue    = !transaction_read.getText().isEmpty() ? transaction_read.getText() : "" + PontoDeFita.EMPTY_CHAR;
         String writeValue   = transaction_write.getText();
         String moveValue    = transaction_move.getText();
 
-        if (writeValue.length() > 1 || moveValue.length() > 1 ){
+        if (writeValue.length() > 1 || moveValue.length() != 1 ){
             return;
         }
 
-        char theWriteChar = writeValue.length() == 1 ? writeValue.charAt(0) : '▢';
-        char theMoveChar = writeValue.length() == 1 ? moveValue.charAt(0) : '▢';
+        char theWriteChar = writeValue.length() == 1 ? writeValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
+        char theMoveChar = moveValue.charAt(0);
+
+        switch (theMoveChar){
+            case 'R':
+            case 'L':
+            case 'S':
+                break;
+            default:
+                final String lastValue = valueLabel.getText();
+                valueLabel.setText("O terceiro valor precisa ser [ L | R | S ]");
+                new Sleeper(){
+                    @Override
+                    public void andDo() {
+                        valueLabel.setText(lastValue);
+                    }
+                }.runAfter(2000);
+                return;
+        }
+
+        Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
+        Aresta aresta = edge.getOrCreateAresta(startVertex);
 
         char[] allChars = readValue.toCharArray();
 

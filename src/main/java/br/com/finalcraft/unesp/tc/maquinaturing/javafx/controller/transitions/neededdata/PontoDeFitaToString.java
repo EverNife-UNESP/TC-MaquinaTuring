@@ -10,16 +10,16 @@ public class PontoDeFitaToString {
 
     String value;
 
-    public static ObservableList<PontoDeFitaToString> observableList(List<PontoDeFita> characterList){
+    public static ObservableList<PontoDeFitaToString> observableList(List<PontoDeFita> pontoDeFitaList){
         ObservableList<PontoDeFitaToString> observableList = FXCollections.observableArrayList();
-        for (PontoDeFita character : characterList){
-            observableList.add(new PontoDeFitaToString(character));
+        for (PontoDeFita pontoDeFita : pontoDeFitaList){
+            observableList.add(new PontoDeFitaToString(pontoDeFita));
         }
         return observableList;
     }
 
     public PontoDeFitaToString(PontoDeFita pontoDeFita) {
-        this.value = pontoDeFita.getFirst() + "|" + pontoDeFita.getSecond() + "|" + pontoDeFita.getOrientation();
+        this.value = pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation();
     }
 
     public String getValue() {

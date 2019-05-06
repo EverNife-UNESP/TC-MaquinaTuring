@@ -1,7 +1,7 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester;
 
 import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
-import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.HistoryLog;
+import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryLog;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
@@ -130,16 +130,16 @@ public class FiniteAutomationTesterController {
         historyLog = Validator.validadeStringWithLog(termoASerValidado);
 
 
-        if (historyLog != null && historyLog.math){
+        if (historyLog != null && historyLog.match){
             niddle = 0;
-            realMovesAmout = historyLog.path.replaceAll("\u03B5","").length() - 1;
+            realMovesAmout = historyLog.time;
             onMoveNiddle();
             passoApassoResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
 
             new Sleeper(){
                 @Override
                 public void andDo() {
-                    passoApassoResult.setText(String.join(" > ",historyLog.path.replaceAll("\u03B5","").split("")) + "    em [" + (historyLog.time + 1) + "] passo(s)");
+                    //passoApassoResult.setText(String.join(" > ",historyLog.expression.replaceAll("\u03B5","").split("")) + "    em [" + (historyLog.time + 1) + "] passo(s)");
                 }
             }.runAfter(1000L);
         }else {
@@ -181,7 +181,8 @@ public class FiniteAutomationTesterController {
             instance.onStepForwardButton.setDisable(false);
         }
 
-        int stageID = Integer.parseInt(historyLog.path.replaceAll("\u03B5","").charAt(niddle)+"");
+        //int stageID = Integer.parseInt(historyLog.expression.replaceAll("\u03B5","").charAt(niddle)+"");
+        int stageID = 0;
         GraphController.getGraph().getAllVertex().forEach(anVertex -> {
             if (!anVertex.isFinale()){
                 anVertex.changeTempColor(Color.WHITE);

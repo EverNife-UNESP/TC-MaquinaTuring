@@ -1,18 +1,16 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.application.validator;
 
-import br.com.finalcraft.unesp.tc.DEBUGGER;
 import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.Aresta;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.PontoDeFita;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.Vertice;
+import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryLog;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Edge;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Graph;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Validator {
 
@@ -60,92 +58,57 @@ public class Validator {
 
     }
 
-
-    public static String theExpression;
+    public static Integer expressionPointer;
 
     public static boolean validadeString(String expression) {
-        theExpression = expression;
-
-        if (verticeInicial == null) {
-            return false;
-        }
-
-        onTimeChange(); // Reinicia o infiniteLoopPreventer
-        HistoryLog historyLog = walk(new HistoryLog(), verticeInicial);
-
-        System.out.println("[" + historyLog.time + "]  --> " + historyLog.path);
-        return historyLog.math;
+        HistoryLog result = validadeStringWithLog(expression);
+        return  result!= null ? result.match : false;
     }
 
     public static HistoryLog validadeStringWithLog(String expression) {
-        theExpression = expression;
-
         if (verticeInicial == null) {
             return null;
         }
 
-        onTimeChange(); // Reinicia o infiniteLoopPreventer
-        HistoryLog historyLog = walk(new HistoryLog(), verticeInicial);
+        HistoryLog historyLog = walk(new HistoryLog(expression,verticeInicial), verticeInicial);
 
-        System.out.println("[" + historyLog.time + "]  --> " + historyLog.path);
+        System.out.println("[" + historyLog.time + " iterations] resultSucces==" + historyLog.match + "  for the expression --> " + historyLog.expression);
         return historyLog;
-    }
-
-    public static List<Integer> infiniteLoopPreventer = new ArrayList<Integer>();
-
-    public static void onTimeChange() {
-        infiniteLoopPreventer.clear();
     }
 
     public static HistoryLog walk(HistoryLog previousLog, Vertice vertice) {
 
-        //Se ele for final, ja retorna pq deu certo
-        previousLog.addPath(vertice.id);
-        if (vertice.isFinale && previousLog.time + 1 == theExpression.length()) {
-            System.out.println("Final <--");
-            previousLog.math = true;
-            return previousLog;
-        }
-
-        //Verifica os caminhos com vazio
-        for (Aresta aresta : vertice.arestasList) {
-            try {
-                if (aresta.getPontosDeFita().contains('\u03B5') && !infiniteLoopPreventer.contains(aresta.getTargetId())) {
-                    infiniteLoopPreventer.add(aresta.getTargetId());
-                    System.out.println("Null Dislock  -:> " + aresta.getTargetId());
-                    HistoryLog previousPrevious = previousLog.clone();
-                    previousPrevious.addNullPathPrefix();
-
-                    HistoryLog historyLog = walk(previousPrevious, getVerticeFromID(aresta.getTargetId()));
-                    if (historyLog.math) {
-                        return historyLog;
-                    }
-                }
-            } catch (Exception ignored) {
-            }
-        }
-
-        //Atualiza o tempo do estado
         previousLog.addTime();
-        onTimeChange(); // Reinicia o infiniteLoopPreventer
 
-        //
+        char checkChar = previousLog.getCharToRead();
+
         for (Aresta aresta : vertice.arestasList) {
-            try {
-                char checkChar = theExpression.charAt(previousLog.time);
-                if (aresta.getPontosDeFita().contains(checkChar)) {
-                    System.out.println("[" + checkChar + "]Checking target  -:> " + aresta.getTargetId());
+            List<PontoDeFita> possibleFutures = aresta.getPossibleFutures(checkChar);
 
-                    //Passa uma cópia do historilog atual
-                    HistoryLog historyLog = walk(previousLog.clone(), getVerticeFromID(aresta.getTargetId()));
-                    if (historyLog.math) {
-                        return historyLog;
+            for (PontoDeFita pontoDeFita : possibleFutures){
+                try {
+                    if (pontoDeFita.getRead() == checkChar){
+                        System.out.println("[reading '" + checkChar + "']Checking target  -:> q" + aresta.getTargetId() + " with logic [" + pontoDeFita + "]" + " %3s for the expression --> " + previousLog.expression);
+                        //Passa uma cópia do historyLog atual
+                        HistoryLog walkedHistoryLog = previousLog.clone();
+                        Vertice targetVertice = aresta.getTargetVertice();
+                        walkedHistoryLog.readAndWrite(pontoDeFita, targetVertice);
+                        HistoryLog resultHistoryLog = walk(walkedHistoryLog, targetVertice);
+                        if (resultHistoryLog.match) {
+                            return resultHistoryLog;
+                        }
                     }
+                }catch (Exception ignored){
+                    ignored.printStackTrace();
                 }
-            } catch (Exception ignored) {
             }
         }
 
+        //Se ele for final, e nao tem mais nada para ler, ja retorna pq deu certo
+        if (vertice.isFinale) {
+            System.out.println("Final <--");
+            previousLog.match = true;
+        }
         return previousLog;
     }
 

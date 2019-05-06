@@ -58,14 +58,14 @@ public class Edge {
         if (bidiretec){
             stringBuilder.append("q" + arestaOne.getSourceId() + " --> q" + arestaOne.getTargetId() + " == ");
             for (PontoDeFita pontoDeFita : arestaOne.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getFirst() + "|" + pontoDeFita.getSecond() + "|" + pontoDeFita.getOrientation() + "  ");
+                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "  ");
             }
             stringBuilder.setLength(stringBuilder.length() - 1);
 
             stringBuilder.append("\n");
             stringBuilder.append("q" + arestaTwo.getSourceId() + " --> q" + arestaTwo.getTargetId() + " == ");
             for (PontoDeFita pontoDeFita : arestaTwo.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getFirst() + "|" + pontoDeFita.getSecond() + "|" + pontoDeFita.getOrientation() + "  ");
+                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "  ");
             }
             stringBuilder.setLength(stringBuilder.length() - 1);
         }else {
@@ -73,7 +73,7 @@ public class Edge {
                 stringBuilder.append("\n\n");
             }
             for (PontoDeFita pontoDeFita : arestaOne.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getFirst() + "|" + pontoDeFita.getSecond() + "|" + pontoDeFita.getOrientation() + "\n");
+                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "\n");
             }
         }
         floatingText.setText(stringBuilder.toString());

@@ -1,22 +1,22 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data;
 
-import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.transitions.neededdata.PontoDeFitaToString;
-
 public class PontoDeFita implements Comparable<PontoDeFita>{
 
-    public Character first;
-    public Character second;
+    public static final char EMPTY_CHAR = '▢';
+
+    public Character read;
+    public Character write;
     public Orientation orientation;
 
-    public PontoDeFita(char first, char second, Orientation orientation) {
-        this.first = first;
-        this.second = second;
+    public PontoDeFita(char read, char write, Orientation orientation) {
+        this.read = read;
+        this.write = write;
         this.orientation = orientation;
     }
 
-    public PontoDeFita(char first, char second,char orientation) {
-        this.first = first;
-        this.second = second;
+    public PontoDeFita(char read, char write, char orientation) {
+        this.read = read;
+        this.write = write;
         this.orientation = Orientation.getByName(orientation);
     }
 
@@ -28,23 +28,28 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
         return this.orientation;
     }
 
-    public Character getFirst() {
-        return first;
+    public Character getRead() {
+        return read;
     }
 
-    public Character getSecond() {
-        return second;
+    public Character getWrite() {
+        return write;
     }
 
     public boolean match(PontoDeFita other) {
-        return this.getFirst() == other.getFirst()
-                && this.getSecond() == other.getSecond()
+        return this.getRead() == other.getRead()
+                && this.getWrite() == other.getWrite()
                 && this.getOrientation() == other.getOrientation();
     }
 
     @Override
     public int compareTo(PontoDeFita o) {
-       return this.getSecond().compareTo(o.getSecond());
+       return this.getWrite().compareTo(o.getWrite());
+    }
+
+    @Override
+    public String toString() {
+        return this.getRead() + "|" + this.getWrite() + "|" + this.getOrientation();
     }
 
     public static enum Orientation{
@@ -75,4 +80,6 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
             return null;
         }
     }
+
+
 }
