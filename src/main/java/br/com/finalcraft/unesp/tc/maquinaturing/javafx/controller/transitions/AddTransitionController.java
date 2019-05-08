@@ -88,12 +88,19 @@ public class AddTransitionController {
         String writeValue   = transaction_write.getText();
         String moveValue    = transaction_move.getText();
 
-        if (writeValue.length() > 1 || moveValue.length() != 1 ){
+        if (writeValue.length() > 1){
+            valueLabel.setText("O segundo valor precisa ser unico");
+            new Sleeper(){
+                @Override
+                public void andDo() {
+                    valueLabel.setText("Valor da Transição");
+                }
+            }.runAfter(2000);
             return;
         }
 
         char theWriteChar = writeValue.length() == 1 ? writeValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
-        char theMoveChar = moveValue.charAt(0);
+        char theMoveChar = moveValue.length() == 1 ? moveValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
 
         switch (theMoveChar){
             case 'R':
@@ -101,12 +108,11 @@ public class AddTransitionController {
             case 'S':
                 break;
             default:
-                final String lastValue = valueLabel.getText();
                 valueLabel.setText("O terceiro valor precisa ser [ L | R | S ]");
                 new Sleeper(){
                     @Override
                     public void andDo() {
-                        valueLabel.setText(lastValue);
+                        valueLabel.setText("Valor da Transição");
                     }
                 }.runAfter(2000);
                 return;

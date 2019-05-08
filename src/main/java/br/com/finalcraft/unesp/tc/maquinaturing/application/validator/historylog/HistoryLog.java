@@ -1,5 +1,6 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog;
 
+import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.PontoDeFita;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.Vertice;
 
@@ -19,11 +20,12 @@ public class HistoryLog{
 
     public HistoryLog(String expression) {
         this.expression.append(expression);
+        pathWalked.add(new HistoryMove(Validator.verticeInicial,expression));
     }
 
     public HistoryLog(String expression, Vertice verticeInicial) {
         this.expression.append(expression);
-        pathWalked.add(new HistoryMove(PontoDeFita.Orientation.STAY,verticeInicial));
+        pathWalked.add(new HistoryMove(verticeInicial,expression));
     }
 
     public HistoryLog clone(){
@@ -46,7 +48,7 @@ public class HistoryLog{
 
     public void readAndWrite(PontoDeFita pontoDeFita, Vertice targetVertice){
         expression.setCharAt(pointer,pontoDeFita.getWrite());
-        pathWalked.add(new HistoryMove(pontoDeFita.getOrientation(),targetVertice));
+        pathWalked.add(new HistoryMove(pontoDeFita,targetVertice,expression.toString()));
         switch (pontoDeFita.getOrientation()){
             case LEFT:
                 pointer--;
@@ -64,5 +66,17 @@ public class HistoryLog{
             case STAY:
                 //DoNothing
         }
+    }
+
+    public HistoryMove getHistoryMoveOf(int time){
+        return pathWalked.get(time);
+    }
+
+    public String getHistoryOfActions(){
+        String[] steps = new String[pathWalked.size()];
+        for (int i = 0; i < pathWalked.size(); i++) {
+            steps[i] = "q" + pathWalked.get(i).getVertice().getId();
+        }
+        return String.join(">",steps);
     }
 }

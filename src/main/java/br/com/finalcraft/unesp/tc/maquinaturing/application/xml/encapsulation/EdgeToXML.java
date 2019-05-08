@@ -21,8 +21,16 @@ public class EdgeToXML {
                 list.add("\t\t<transition>;");
                 list.add("\t\t\t<from>" + aresta.getSourceId() + "</from>;");
                 list.add("\t\t\t<to>" + aresta.getTargetId() + "</to>;");
-                list.add("\t\t\t<read>" + pontoDeFita.getRead()  + "</read>;");
-                list.add("\t\t\t<write>" + pontoDeFita.getWrite()  + "</write>;");
+                if (pontoDeFita.getRead() == PontoDeFita.EMPTY_CHAR){
+                    list.add("\t\t\t<read/>;");
+                }else {
+                    list.add("\t\t\t<read>" + pontoDeFita.getRead()  + "</read>;");
+                }
+                if (pontoDeFita.getWrite() == PontoDeFita.EMPTY_CHAR){
+                    list.add("\t\t\t<write/>;");
+                }else {
+                    list.add("\t\t\t<write>" + pontoDeFita.getWrite()  + "</write>;");
+                }
                 list.add("\t\t\t<move>" + pontoDeFita.getOrientation()  + "</move>;");
                 list.add("\t\t</transition>;");
             }

@@ -114,9 +114,9 @@ public class XMLFileManipulator {
 
                     int sourceId    = Integer.parseInt(eElement.getElementsByTagName("from").item(0).getTextContent());
                     int targetId    = Integer.parseInt(eElement.getElementsByTagName("to").item(0).getTextContent());
-                    char read       = eElement.getElementsByTagName("read").item(0).getTextContent().charAt(0);
-                    char write      = eElement.getElementsByTagName("write").item(0).getTextContent().charAt(0);
-                    char move       = eElement.getElementsByTagName("move").item(0).getTextContent().charAt(0);
+                    char read       = getElement(eElement,"read");
+                    char write      = getElement(eElement,"write");
+                    char move       = getElement(eElement,"move");
 
                     System.out.println("Transition sourceId : " + sourceId);
                     System.out.println("Transition targetId : " + targetId);
@@ -143,6 +143,11 @@ public class XMLFileManipulator {
         }
 
         return false;
+    }
+
+    public static char getElement(Element element, String tagName){
+        Node node =  element.getElementsByTagName(tagName).item(0);
+        return !node.getTextContent().isEmpty() ? node.getTextContent().charAt(0) : PontoDeFita.EMPTY_CHAR;
     }
 
 }

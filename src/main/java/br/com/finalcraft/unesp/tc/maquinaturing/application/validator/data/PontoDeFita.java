@@ -37,9 +37,7 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
     }
 
     public boolean match(PontoDeFita other) {
-        return this.getRead() == other.getRead()
-                && this.getWrite() == other.getWrite()
-                && this.getOrientation() == other.getOrientation();
+        return this.toString().equals(other.toString());
     }
 
     @Override
@@ -55,7 +53,8 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
     public static enum Orientation{
         RIGHT("R"),
         LEFT("L"),
-        STAY("S");
+        STAY("S"),
+        BEGINNING("B");
 
 
         String alias;
@@ -70,6 +69,8 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
 
         public static Orientation getByName(char name){
             switch (name){
+                case 'B':
+                    return BEGINNING;
                 case 'R':
                     return RIGHT;
                 case 'L':

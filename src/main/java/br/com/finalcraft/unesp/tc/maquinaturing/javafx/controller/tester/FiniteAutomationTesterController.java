@@ -3,6 +3,7 @@ package br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester;
 import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryLog;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
+import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryMove;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.view.MyFXMLs;
@@ -84,6 +85,9 @@ public class FiniteAutomationTesterController {
     private Label passoApassoResult;
 
     @FXML
+    private Label passoApassoResult2;
+
+    @FXML
     void onDireto(ActionEvent event) {
         String termoASerValidado = diretoTextField.getText();
 
@@ -126,22 +130,22 @@ public class FiniteAutomationTesterController {
     void onPassoAPasso(ActionEvent event) {
         String termoASerValidado = passoApassoTextField.getText();
 
-
         historyLog = Validator.validadeStringWithLog(termoASerValidado);
-
 
         if (historyLog != null && historyLog.match){
             niddle = 0;
             realMovesAmout = historyLog.time;
             onMoveNiddle();
             passoApassoResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
+            passoApassoResult2.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
 
             new Sleeper(){
                 @Override
                 public void andDo() {
-                    //passoApassoResult.setText(String.join(" > ",historyLog.expression.replaceAll("\u03B5","").split("")) + "    em [" + (historyLog.time + 1) + "] passo(s)");
+                    passoApassoResult.setText( "(" + historyLog.getHistoryOfActions() + ")");
+                    passoApassoResult2.setText( "Aceito em [" + (historyLog.time) + "] passo(s)");
                 }
-            }.runAfter(1000L);
+            }.runAfter(700L);
         }else {
             instance.onStepBackButton.setOpacity(0.3);
             instance.onStepBackButton.setDisable(true);
@@ -149,6 +153,7 @@ public class FiniteAutomationTesterController {
             instance.onStepForwardButton.setDisable(true);
 
             passoApassoResult.setText("✘✘✘✘ Termo Recusado ✘✘✘✘");
+            passoApassoResult2.setText("");
             new Sleeper(){
                 @Override
                 public void andDo() {
@@ -182,7 +187,9 @@ public class FiniteAutomationTesterController {
         }
 
         //int stageID = Integer.parseInt(historyLog.expression.replaceAll("\u03B5","").charAt(niddle)+"");
-        int stageID = 0;
+        HistoryMove historyMove = historyLog.getHistoryMoveOf(niddle);
+        int stageID = historyMove.getVertice().getId();
+
         GraphController.getGraph().getAllVertex().forEach(anVertex -> {
             if (!anVertex.isFinale()){
                 anVertex.changeTempColor(Color.WHITE);
@@ -192,7 +199,8 @@ public class FiniteAutomationTesterController {
         });
         try{
             Vertex vertex = GraphController.getGraph().getVertex(stageID);
-            instance.passoApassoResult.setText(vertex.getCustomName());
+            instance.passoApassoResult.setText(historyMove.getCurrentExpression());
+            instance.passoApassoResult2.setText(historyMove.getPontoDeFita().toString());
             vertex.changeTempColor(Color.LIGHTGREEN);
         }catch (Exception ignored){}
     }
