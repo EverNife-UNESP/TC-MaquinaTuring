@@ -48,7 +48,6 @@ public class HistoryLog{
 
     public void readAndWrite(PontoDeFita pontoDeFita, Vertice targetVertice){
         expression.setCharAt(pointer,pontoDeFita.getWrite());
-        pathWalked.add(new HistoryMove(pontoDeFita,targetVertice,expression.toString()));
         switch (pontoDeFita.getOrientation()){
             case LEFT:
                 pointer--;
@@ -66,6 +65,7 @@ public class HistoryLog{
             case STAY:
                 //DoNothing
         }
+        pathWalked.add(new HistoryMove(pontoDeFita,targetVertice,expression.toString(),pointer));
     }
 
     public HistoryMove getHistoryMoveOf(int time){

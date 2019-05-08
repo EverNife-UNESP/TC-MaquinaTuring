@@ -70,6 +70,10 @@ public class Validator {
             return null;
         }
 
+        if (expression.isEmpty()){
+            expression = "" + PontoDeFita.EMPTY_CHAR;
+        }
+
         HistoryLog historyLog = walk(new HistoryLog(expression,verticeInicial), verticeInicial);
 
         System.out.println("[" + historyLog.time + " iterations] resultSucces==" + historyLog.match + "  for the expression --> " + historyLog.expression);

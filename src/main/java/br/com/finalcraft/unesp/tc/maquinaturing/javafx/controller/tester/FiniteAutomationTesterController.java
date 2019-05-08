@@ -11,11 +11,16 @@ import br.com.finalcraft.unesp.tc.myown.Sleeper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -82,7 +87,7 @@ public class FiniteAutomationTesterController {
     private TextField passoApassoTextField;
 
     @FXML
-    private Label passoApassoResult;
+    private HBox passoApassoResult;
 
     @FXML
     private Label passoApassoResult2;
@@ -90,6 +95,7 @@ public class FiniteAutomationTesterController {
     @FXML
     void onDireto(ActionEvent event) {
         String termoASerValidado = diretoTextField.getText();
+
 
         if (Validator.validadeString(termoASerValidado)){
             diretoResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
@@ -136,13 +142,16 @@ public class FiniteAutomationTesterController {
             niddle = 0;
             realMovesAmout = historyLog.time;
             onMoveNiddle();
-            passoApassoResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
+
+            passoApassoResult.getChildren().clear();
+            passoApassoResult.getChildren().add(new Label( "✔✔✔✔ Termo Aceito ✔✔✔✔" ));
             passoApassoResult2.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
 
             new Sleeper(){
                 @Override
                 public void andDo() {
-                    passoApassoResult.setText( "(" + historyLog.getHistoryOfActions() + ")");
+                    passoApassoResult.getChildren().clear();
+                    passoApassoResult.getChildren().add(new Label( "(" + historyLog.getHistoryOfActions() + ")" ));
                     passoApassoResult2.setText( "Aceito em [" + (historyLog.time) + "] passo(s)");
                 }
             }.runAfter(700L);
@@ -152,12 +161,14 @@ public class FiniteAutomationTesterController {
             instance.onStepForwardButton.setOpacity(0.3);
             instance.onStepForwardButton.setDisable(true);
 
-            passoApassoResult.setText("✘✘✘✘ Termo Recusado ✘✘✘✘");
+            passoApassoResult.getChildren().clear();
+            passoApassoResult.getChildren().add(new Label( "✘✘✘✘ Termo Recusado ✘✘✘✘" ));
             passoApassoResult2.setText("");
             new Sleeper(){
                 @Override
                 public void andDo() {
-                    passoApassoResult.setText("...");
+                    passoApassoResult.getChildren().clear();
+                    passoApassoResult.getChildren().add(new Label( "✘✘✘✘ Termo Recusado ✘✘✘✘" ));
                 }
             }.runAfter(3000L);
 
@@ -199,8 +210,31 @@ public class FiniteAutomationTesterController {
         });
         try{
             Vertex vertex = GraphController.getGraph().getVertex(stageID);
-            instance.passoApassoResult.setText(historyMove.getCurrentExpression());
-            instance.passoApassoResult2.setText(historyMove.getPontoDeFita().toString());
+
+            String firstPart = historyMove.getCurrentExpression().substring(0,historyMove.pointer);
+            String theChar = historyMove.getCurrentExpression().charAt(historyMove.pointer) + "";
+            boolean secondPartEnabled = true;
+            String secondPart;
+            try {
+                secondPart = historyMove.getCurrentExpression().substring(historyMove.pointer + 1);
+            }catch (Exception errorTaking){
+                errorTaking.printStackTrace();
+                secondPartEnabled = false;
+                secondPart = historyMove.getCurrentExpression().substring(historyMove.pointer);
+
+            }
+
+            instance.passoApassoResult.getChildren().clear();
+            instance.passoApassoResult.getChildren().add(new Label( firstPart ));
+            Label label = new Label( theChar );
+            label.setBackground( new Background( new BackgroundFill( Color.GREEN, CornerRadii.EMPTY, Insets.EMPTY ) ) );
+            instance.passoApassoResult.getChildren().add(label);
+
+            if (secondPartEnabled){
+                instance.passoApassoResult.getChildren().add(new Label( secondPart ));
+            }
+
+            instance.passoApassoResult2.setText("Ultima operação lida: " + historyMove.getPontoDeFita().toString());
             vertex.changeTempColor(Color.LIGHTGREEN);
         }catch (Exception ignored){}
     }
