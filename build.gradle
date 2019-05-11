@@ -16,7 +16,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 //apply plugin: 'drawings-gradle-plugin'
 
 group 'br.com.finalcraft'
-version '1.0.1a'
+version '1.0.1b'
 
 sourceCompatibility = 1.8
 
@@ -42,7 +42,7 @@ shadowJar {
     }
     archiveName = "${baseName}-${version}.jar"
     manifest {
-        attributes 'Main-Class': 'br.com.finalcraft.unesp.tc.maquinaturing.drawings.JavaFXMain'
+        attributes 'Main-Class': 'br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain'
     }
 }
 

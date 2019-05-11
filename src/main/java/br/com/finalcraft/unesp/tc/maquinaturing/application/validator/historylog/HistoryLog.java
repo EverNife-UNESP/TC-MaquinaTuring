@@ -28,9 +28,16 @@ public class HistoryLog{
         pathWalked.add(new HistoryMove(verticeInicial,expression));
     }
 
+    @Override
     public HistoryLog clone(){
         HistoryLog historyLog = new HistoryLog(expression.toString());
-        historyLog.pathWalked = this.pathWalked;
+
+        List<HistoryMove> newList = new ArrayList<HistoryMove>();
+        for (HistoryMove historyMove : this.pathWalked){
+            newList.add(historyMove.clone());
+        }
+        historyLog.pathWalked = newList;
+
         historyLog.pointer = this.pointer;
         historyLog.time = this.time;
         historyLog.match = this.match;

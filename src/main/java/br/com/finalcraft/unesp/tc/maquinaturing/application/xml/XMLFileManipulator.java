@@ -33,7 +33,7 @@ public class XMLFileManipulator {
         Graph graph = GraphController.getGraph();
 
         fileLines.add("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--Created with FiniAutomation 2018.--><structure>;");
-        fileLines.add("\t<type>fa</type>;");
+        fileLines.add("\t<type>turing</type>;");
         fileLines.add("\t<automaton>;");
         fileLines.add("\t\t<!--The list of states.-->;");
         for (Vertex vertex : graph.getAllVertex()){

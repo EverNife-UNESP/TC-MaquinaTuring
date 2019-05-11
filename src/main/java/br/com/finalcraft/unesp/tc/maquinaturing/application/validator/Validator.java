@@ -113,6 +113,7 @@ public class Validator {
             System.out.println("Final <--");
             previousLog.match = true;
         }
+        System.out.println("NonFinal <--");
         return previousLog;
     }
 
