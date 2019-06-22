@@ -6,6 +6,7 @@ import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryMove;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.modules.DirectTestController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.view.MyFXMLs;
 import br.com.finalcraft.unesp.tc.myown.Sleeper;
 import javafx.event.ActionEvent;
@@ -26,9 +27,11 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class FiniteAutomationTesterController {
+public class TesterController {
 
-    private static FiniteAutomationTesterController instance;
+    public static int currentStackSize = 1;
+
+    private static TesterController instance;
     private static Stage dialog;
 
     @FXML
@@ -52,6 +55,7 @@ public class FiniteAutomationTesterController {
                 GraphController.getGraph().reloadPage();
             }
         });
+        DirectTestController.setUp();
     }
 
     public static void show(){

@@ -1,10 +1,9 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller;
 
 import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
-import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.LoaderController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.SaverController;
-import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.FiniteAutomationTesterController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.TesterController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -65,16 +64,6 @@ public class MainController {
     }
 
     @FXML
-    void openGramar() {
-
-    }
-
-    @FXML
-    void openRegex() {
-
-    }
-
-    @FXML
     void openSaver() {
         SaverController.show();
     }
@@ -83,23 +72,6 @@ public class MainController {
     void openImporter() {
         LoaderController.show();
     }
-
-    @FXML
-    void convertAFNDToAFD() {
-        Validator.loadGraph();
-        //Validator.removeNullEdges();
-        //Validator.convertToAFD();
-    }
-
-    @FXML
-    void removeEmptys() {
-        Validator.loadGraph();
-
-        //Validator.removeNullEdges();
-        Validator.loadValidatorToGraph();
-    }
-
-
 
     @FXML
     void onStateChange() {
@@ -117,7 +89,7 @@ public class MainController {
 
     @FXML
     void onTestarAutomato() {
-        FiniteAutomationTesterController.show();
+        TesterController.show();
     }
 
 }
