@@ -8,6 +8,8 @@ import br.com.finalcraft.unesp.tc.maquinaturing.application.xml.encapsulation.Ve
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Edge;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Graph;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
+
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,12 +36,13 @@ public class XMLFileManipulator {
 
         fileLines.add("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--Created with FiniAutomation 2018.--><structure>;");
         fileLines.add("\t<type>turing</type>;");
+        fileLines.add("\t<tapes>" + MainController.currentStackSize + "</tapes>;");
         fileLines.add("\t<automaton>;");
         fileLines.add("\t\t<!--The list of states.-->;");
         for (Vertex vertex : graph.getAllVertex()){
             fileLines.addAll(VertexToXML.generateStringLines(vertex));
         }
-        fileLines.add("\t\t<!--The list of transitions.-->;");
+        fileLines.add("\t\t<!--The list of editors.-->;");
         for (Edge edge : graph.getEdges()){
             fileLines.addAll(EdgeToXML.generateStringLines(edge));
         }
@@ -70,6 +73,8 @@ public class XMLFileManipulator {
 
 
             GraphController.clear();
+            int tapesSize = Integer.parseInt(doc.getElementsByTagName("tapes").item(0).getTextContent());
+            MainController.changeStackSizeTo(tapesSize);
             NodeList vertexex = doc.getElementsByTagName("state");
             for (int temp = 0; temp < vertexex.getLength(); temp++) {
                 Node nNode = vertexex.item(temp);
@@ -114,21 +119,29 @@ public class XMLFileManipulator {
 
                     int sourceId    = Integer.parseInt(eElement.getElementsByTagName("from").item(0).getTextContent());
                     int targetId    = Integer.parseInt(eElement.getElementsByTagName("to").item(0).getTextContent());
-                    char read       = getElement(eElement,"read");
-                    char write      = getElement(eElement,"write");
-                    char move       = getElement(eElement,"move");
-
-                    System.out.println("Transition sourceId : " + sourceId);
-                    System.out.println("Transition targetId : " + targetId);
-                    System.out.println("Transition read : " + read);
-                    System.out.println("Transition write : " + write);
-                    System.out.println("Transition move : " + move);
 
                     Vertex sourceVertex = GraphController.getGraph().getVertex(sourceId);
                     Vertex targetVertex = GraphController.getGraph().getVertex(targetId);
                     Edge edge  = GraphController.getGraph().getOrCreateEdge(sourceVertex,targetVertex);
                     Aresta aresta = edge.getOrCreateAresta(sourceVertex);
-                    aresta.addPontoDeFita(new PontoDeFita(read,write,move));
+
+                    System.out.println("Transition sourceId : " + sourceId);
+                    System.out.println("Transition targetId : " + targetId);
+
+                    for (int tapeIdentifier = 1; tapeIdentifier <= MainController.currentStackSize; tapeIdentifier++){
+
+                        char read       = getElement(eElement,"read", tapeIdentifier);
+                        char write      = getElement(eElement,"write", tapeIdentifier);
+                        char move       = getElement(eElement,"move", tapeIdentifier);
+
+                        System.out.println("Tape [" + tapeIdentifier + "]:");
+                        System.out.println("Transition read [tape==" + tapeIdentifier + "]: " + read);
+                        System.out.println("Transition write [tape==" + tapeIdentifier + "]: " + write);
+                        System.out.println("Transition move [tape==" + tapeIdentifier + "]: " + move);
+                        System.out.println(" ");
+
+                        aresta.addPontoDeFita(new PontoDeFita(read,write,move,tapeIdentifier - 1)); //My tape uses 0-->999,,, not 1-->999,,,
+                    }
                 }
             }
 
@@ -145,9 +158,22 @@ public class XMLFileManipulator {
         return false;
     }
 
-    public static char getElement(Element element, String tagName){
-        Node node =  element.getElementsByTagName(tagName).item(0);
-        return !node.getTextContent().isEmpty() ? node.getTextContent().charAt(0) : PontoDeFita.EMPTY_CHAR;
+    public static char getElement(Element element, String tagName, int tape){
+        NodeList nodeList = element.getElementsByTagName(tagName);
+        int length = nodeList.getLength();
+        for (int i = 0; i < length; i++){
+            try {
+                Element iElement = (Element) nodeList.item(i);
+                int iD = Integer.valueOf(iElement.getAttribute("tape"));
+
+                if (iD == tape){
+                    return !iElement.getTextContent().isEmpty() ? iElement.getTextContent().charAt(0) : PontoDeFita.EMPTY_CHAR;
+                }
+            }catch (Exception e){
+               e.printStackTrace();
+            }
+        }
+        return PontoDeFita.EMPTY_CHAR;
     }
 
 }

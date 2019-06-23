@@ -1,9 +1,9 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data;
 
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Aresta {
@@ -12,21 +12,31 @@ public class Aresta {
     public int targetId;
 
     public List<PontoDeFita> pontoDeFitaList = new ArrayList<PontoDeFita>();
+    public int pontoDeFitaOrder = 0;
+    public int pontoDeFitaOrderAux = 0;
+    public PontoDeFita lastFather;
 
     public Aresta(int sourceId, int destinyId) {
         this.sourceId = sourceId;
         this.targetId = destinyId;
     }
 
-    public boolean addPontoDeFita(PontoDeFita pontoDeFita){
-        for (PontoDeFita registered : pontoDeFitaList){
-            if (registered.match(pontoDeFita)){
-                return false;
-            }
+    public void addPontoDeFita(PontoDeFita pontosDeFita){
+
+        if (pontoDeFitaOrderAux == 0){
+            lastFather = pontosDeFita;
+        }else {
+            lastFather.brothers.add(pontosDeFita);
         }
-        pontoDeFitaList.add(pontoDeFita);
-        Collections.sort(pontoDeFitaList);
-        return true;
+
+        pontosDeFita.setOrder(pontoDeFitaOrder);
+        pontoDeFitaList.add(pontosDeFita);
+
+        pontoDeFitaOrderAux++;
+        if (pontoDeFitaOrderAux == MainController.currentStackSize){
+            pontoDeFitaOrder++;
+            pontoDeFitaOrderAux = 0;
+        }
     }
 
     public List<PontoDeFita> getPontosDeFita() {
@@ -36,7 +46,17 @@ public class Aresta {
     public List<PontoDeFita> getPossibleFutures(char character) {
         List<PontoDeFita> possibleFutures = new ArrayList<PontoDeFita>();
         for (PontoDeFita pontoDeFita : pontoDeFitaList){
-            if (pontoDeFita.getRead() == character){
+            if (pontoDeFita.tapeIdentifier == 0 && pontoDeFita.getRead() == character){
+                possibleFutures.add(pontoDeFita);
+            }
+        }
+        return possibleFutures;
+    }
+
+    public List<PontoDeFita> getPontosDeFita(int order) {
+        List<PontoDeFita> possibleFutures = new ArrayList<PontoDeFita>();
+        for (PontoDeFita pontoDeFita : pontoDeFitaList){
+            if (pontoDeFita.orderIdentifier == order){
                 possibleFutures.add(pontoDeFita);
             }
         }

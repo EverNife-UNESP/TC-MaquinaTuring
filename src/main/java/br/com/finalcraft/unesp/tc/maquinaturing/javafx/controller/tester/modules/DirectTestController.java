@@ -1,34 +1,21 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.modules;
 
-import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
 import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.Validator;
-import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryLog;
-import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.historylog.HistoryMove;
-import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
-import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.StackDependencieController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.StackChangeListener;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.TesterController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.view.MyFXMLs;
 import br.com.finalcraft.unesp.tc.myown.Sleeper;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
-public class DirectTestController implements StackDependencieController{
+public class DirectTestController implements StackChangeListener {
 
     private static DirectTestController instance;
     private static Stage dialog;
@@ -36,6 +23,7 @@ public class DirectTestController implements StackDependencieController{
     @FXML
     void initialize() {
         instance = this;
+        MainController.addStackChangeListener(this);
     }
 
     public static void setUp(){
@@ -45,18 +33,15 @@ public class DirectTestController implements StackDependencieController{
         // delivered to any other application window.
         dialog.initOwner(JavaFXMain.thePrimaryStage);
 
-        Scene newSceneWindow1 = new Scene(MyFXMLs.finiteautomation_tester);
+        Scene newSceneWindow1 = new Scene(MyFXMLs.finiteautomation_tester_direct);
         dialog.setScene(newSceneWindow1);
     }
 
     public static void show(){
-        Validator.loadGraph();
-
         instance.textField2.setText("");
         instance.textField3.setText("");
         instance.textField4.setText("");
         instance.textField5.setText("");
-
         dialog.show();
     }
 
@@ -64,7 +49,7 @@ public class DirectTestController implements StackDependencieController{
     private TextField textField1;
 
     @FXML
-    private Label directResullt;
+    private Label directResult;
 
     @FXML
     private TextField textField2;
@@ -81,31 +66,37 @@ public class DirectTestController implements StackDependencieController{
     @FXML
     void onDirectTest(ActionEvent event) {
 
+        String[] expressions = new String[MainController.currentStackSize];
 
+        switch (expressions.length){
+            case 5:
+                expressions[4] = textField5.getText();
+            case 4:
+                expressions[3] = textField4.getText();
+            case 3:
+                expressions[2] = textField3.getText();
+            case 2:
+                expressions[1] = textField2.getText();
+            case 1:
+                expressions[0] = textField1.getText();
+        }
 
-        String termoASerValidado = diretoTextField.getText();
-
-        if (Validator.validadeString(termoASerValidado)){
-            diretoResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
+        if (Validator.validadeStringMark2(expressions)){
+            directResult.setText("✔✔✔✔ Termo Aceito ✔✔✔✔");
         }else {
-            diretoResult.setText("✘✘✘✘ Termo Recusado ✘✘✘✘");
+            directResult.setText("✘✘✘✘ Termo Recusado ✘✘✘✘");
         }
 
         new Sleeper(){
             @Override
             public void andDo() {
-                diretoResult.setText("....");
+                directResult.setText("....");
             }
         }.runAfter(3000L);
     }
 
 
     //---------
-
-    public void disableUnusedFields(){
-        if (TesterController.currentStackSize >1 1) textField1
-
-    }
 
     @Override
     public void onStackSizeChange(int newStackSize) {

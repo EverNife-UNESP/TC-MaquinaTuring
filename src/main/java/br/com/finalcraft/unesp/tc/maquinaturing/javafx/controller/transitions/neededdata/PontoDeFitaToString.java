@@ -13,13 +13,15 @@ public class PontoDeFitaToString {
     public static ObservableList<PontoDeFitaToString> observableList(List<PontoDeFita> pontoDeFitaList){
         ObservableList<PontoDeFitaToString> observableList = FXCollections.observableArrayList();
         for (PontoDeFita pontoDeFita : pontoDeFitaList){
-            observableList.add(new PontoDeFitaToString(pontoDeFita));
+            if (pontoDeFita.isMainPonto()){
+                observableList.add(new PontoDeFitaToString(pontoDeFita));
+            }
         }
         return observableList;
     }
 
     public PontoDeFitaToString(PontoDeFita pontoDeFita) {
-        this.value = pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation();
+        this.value = pontoDeFita.toString();
     }
 
     public String getValue() {

@@ -73,7 +73,9 @@ public class Edge {
                 stringBuilder.append("\n\n");
             }
             for (PontoDeFita pontoDeFita : arestaOne.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "\n");
+                if (pontoDeFita.isMainPonto()){
+                    stringBuilder.append( pontoDeFita.toString() + "\n");
+                }
             }
         }
         floatingText.setText(stringBuilder.toString());
@@ -97,6 +99,7 @@ public class Edge {
             if (arestaTwo.isValid()){
                 Edge edge = GraphController.getGraph().getOrCreateEdge(this.target,this.source);
                 this.arestaTwo.getPontosDeFita().forEach(character -> edge.arestaOne.addPontoDeFita(character));
+                edge.arestaOne.pontoDeFitaOrder = this.arestaTwo.pontoDeFitaOrder;
             }
             GraphController.getGraph().reloadPage();
             return true;

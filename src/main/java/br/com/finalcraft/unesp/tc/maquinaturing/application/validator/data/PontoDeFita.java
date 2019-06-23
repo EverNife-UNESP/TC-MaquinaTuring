@@ -1,5 +1,8 @@
 package br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PontoDeFita implements Comparable<PontoDeFita>{
 
     public static final char EMPTY_CHAR = '▢';
@@ -7,6 +10,22 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
     public Character read;
     public Character write;
     public Orientation orientation;
+    public int tapeIdentifier = 0;
+    public int orderIdentifier;
+
+    public List<PontoDeFita> brothers = new ArrayList<PontoDeFita>();
+
+    public boolean isMainPonto(){
+        return this.tapeIdentifier == 0;
+    }
+
+    public int getOrder() {
+        return orderIdentifier;
+    }
+
+    public void setOrder(int orderIdentifier){
+        this.orderIdentifier = orderIdentifier;
+    }
 
     public PontoDeFita(char read, char write, Orientation orientation) {
         this.read = read;
@@ -18,6 +37,13 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
         this.read = read;
         this.write = write;
         this.orientation = Orientation.getByName(orientation);
+    }
+
+    public PontoDeFita(char read, char write, char orientation, int tapeIdentifier) {
+        this.read = read;
+        this.write = write;
+        this.orientation = Orientation.getByName(orientation);
+        this.tapeIdentifier = tapeIdentifier;
     }
 
     public void setOrientation(Orientation orientation){
@@ -37,7 +63,7 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
     }
 
     public boolean match(PontoDeFita other) {
-        return this.toString().equals(other.toString());
+        return (this.toString().equals(other.toString()));// && this.orderIdentifier == other.orderIdentifier;
     }
 
     @Override
@@ -47,7 +73,20 @@ public class PontoDeFita implements Comparable<PontoDeFita>{
 
     @Override
     public String toString() {
-        return this.getRead() + "|" + this.getWrite() + "|" + this.getOrientation();
+        if (!this.isMainPonto()) {
+            return this.getRead() + "|" + this.getWrite() + "|" + this.getOrientation();
+        }else {
+            StringBuilder stringBuilder = new StringBuilder("[ ");
+            stringBuilder.append(this.getRead() + "|" + this.getWrite() + "|" + this.getOrientation());
+
+            for (PontoDeFita brother : brothers){
+                stringBuilder.append(" - ");
+                stringBuilder.append(brother.toString());
+            }
+
+            stringBuilder.append(" ]");
+            return stringBuilder.toString();
+        }
     }
 
     public static enum Orientation{

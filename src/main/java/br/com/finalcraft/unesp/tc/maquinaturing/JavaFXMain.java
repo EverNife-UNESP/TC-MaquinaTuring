@@ -1,5 +1,6 @@
 package br.com.finalcraft.unesp.tc.maquinaturing;
 
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.LoaderController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.SaverController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.states.StateEditorController;
@@ -43,6 +44,8 @@ public class JavaFXMain extends Application {
         TesterController.setUp();
         SaverController.setUp();
         LoaderController.setUp();
+
+        MainController.changeStackSizeTo(3);
     }
 
     public void initRootLayout()  throws Exception{

@@ -11,8 +11,23 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainController {
 
+    public static int currentStackSize = 1;
+
+    private static List<StackChangeListener> stackChangeListeners = new ArrayList<>();
+    public static void addStackChangeListener(StackChangeListener listener){
+        stackChangeListeners.add(listener);
+    }
+
+    public static void changeStackSizeTo(int newSize){
+        System.out.println("Change tapes size to " + newSize);
+        currentStackSize = newSize;
+        stackChangeListeners.forEach(listener -> listener.onStackSizeChange(newSize));
+    }
 
     public enum PressedButton{
         EDITAR_ESTADOS,

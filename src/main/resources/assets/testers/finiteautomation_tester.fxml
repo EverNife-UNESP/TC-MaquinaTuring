@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.TesterController">
+    <children>
+        <Pane prefHeight="266.0" prefWidth="442.0" GridPane.rowIndex="1">
+            <children>
+                <Label layoutX="63.0" layoutY="24.0" prefHeight="40.0" prefWidth="319.0" text="Escolha um tipo de Teste">
+               <font>
+                  <Font name="Bell MT" size="28.0" />
+               </font></Label>
+                <Button layoutX="38.0" layoutY="133.0" mnemonicParsing="false" onAction="#onDireto" prefHeight="25.0" prefWidth="367.0" text="Teste Direto" />
+            <Button layoutX="38.0" layoutY="167.0" mnemonicParsing="false" onAction="#onMultiplo" prefHeight="25.0" prefWidth="367.0" text="Teste Múltiplo" />
+            <Button layoutX="39.0" layoutY="201.0" mnemonicParsing="false" onAction="#onPassoAPasso" prefHeight="25.0" prefWidth="367.0" text="Teste passo a passo" />
+            </children>
+        </Pane>
+    </children>
+    <columnConstraints>
+        <ColumnConstraints />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints />
+        <RowConstraints />
+    </rowConstraints>
+</GridPane>

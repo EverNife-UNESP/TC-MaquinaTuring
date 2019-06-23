@@ -6,18 +6,18 @@ import br.com.finalcraft.unesp.tc.maquinaturing.application.validator.data.Ponto
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Edge;
 import br.com.finalcraft.unesp.tc.maquinaturing.desenho.Vertex;
 import br.com.finalcraft.unesp.tc.maquinaturing.JavaFXMain;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.StackChangeListener;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.view.MyFXMLs;
 import br.com.finalcraft.unesp.tc.myown.Sleeper;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class AddTransitionController {
+public class AddTransitionController implements StackChangeListener {
 
 
     private static AddTransitionController instance;
@@ -31,8 +31,7 @@ public class AddTransitionController {
     @FXML
     void initialize() {
         instance = this;
-
-
+        MainController.addStackChangeListener(this);
     }
 
     public static void setUp(){
@@ -53,62 +52,147 @@ public class AddTransitionController {
         endVertex = end;
 
         instance.stateIdentifier.setText("q" + startVertex.getID() + " --> " + "q" + endVertex.getID());
-        instance.transaction_read.setText("");
 
+        instance.transaction_read1.setText("");
+        instance.transaction_read2.setText("");
+        instance.transaction_read3.setText("");
+        instance.transaction_read4.setText("");
+        instance.transaction_read5.setText("");
+
+        instance.transaction_write1.setText("");
+        instance.transaction_write2.setText("");
+        instance.transaction_write3.setText("");
+        instance.transaction_write4.setText("");
+        instance.transaction_write5.setText("");
+
+        instance.transaction_move1.setText("");
+        instance.transaction_move2.setText("");
+        instance.transaction_move3.setText("");
+        instance.transaction_move4.setText("");
+        instance.transaction_move5.setText("");
 
         dialog.show();
     }
 
     @FXML
-    private TextField transaction_read;
-
-    @FXML
-    private TextField transaction_write;
-
-    @FXML
-    private TextField transaction_move;
+    private Label valueLabel;
 
     @FXML
     private Label stateIdentifier;
 
     @FXML
-    private Label valueLabel;
-
-
-    @FXML
-    private CheckBox initial;
+    private TextField transaction_read1;
 
     @FXML
-    private CheckBox finale;
+    private TextField transaction_write1;
 
     @FXML
-    void onSaveChanges(ActionEvent event) {
+    private TextField transaction_move1;
 
-        String readValue    = !transaction_read.getText().isEmpty() ? transaction_read.getText() : "" + PontoDeFita.EMPTY_CHAR;
-        String writeValue   = transaction_write.getText();
-        String moveValue    = transaction_move.getText();
+    @FXML
+    private TextField transaction_read2;
 
-        if (writeValue.length() > 1){
-            valueLabel.setText("O segundo valor precisa ser unico");
-            new Sleeper(){
-                @Override
-                public void andDo() {
-                    valueLabel.setText("Valor da Transição");
-                }
-            }.runAfter(2000);
-            return;
+    @FXML
+    private TextField transaction_write2;
+
+    @FXML
+    private TextField transaction_move2;
+
+    @FXML
+    private TextField transaction_read3;
+
+    @FXML
+    private TextField transaction_write3;
+
+    @FXML
+    private TextField transaction_move3;
+
+    @FXML
+    private TextField transaction_read4;
+
+    @FXML
+    private TextField transaction_write4;
+
+    @FXML
+    private TextField transaction_move4;
+
+    @FXML
+    private TextField transaction_read5;
+
+    @FXML
+    private TextField transaction_write5;
+
+    @FXML
+    private TextField transaction_move5;
+
+    @FXML
+    void onCancel() {
+        dialog.close();
+    }
+
+
+    private TextField getRead(int stackNumber){
+        switch (stackNumber){
+            case 0:
+                return transaction_read1;
+            case 1:
+                return transaction_read2;
+            case 2:
+                return transaction_read3;
+            case 3:
+                return transaction_read4;
+            case 4:
+                return transaction_read5;
         }
+        return null;
+    }
 
-        char theWriteChar = writeValue.length() == 1 ? writeValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
-        char theMoveChar = moveValue.length() == 1 ? moveValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
+    private TextField getWrite(int stackNumber){
+        switch (stackNumber){
+            case 0:
+                return transaction_write1;
+            case 1:
+                return transaction_write2;
+            case 2:
+                return transaction_write3;
+            case 3:
+                return transaction_write4;
+            case 4:
+                return transaction_write5;
+        }
+        return null;
+    }
 
-        switch (theMoveChar){
-            case 'R':
-            case 'L':
-            case 'S':
-                break;
-            default:
-                valueLabel.setText("O terceiro valor precisa ser [ L | R | S ]");
+    private TextField getMove(int stackNumber){
+        switch (stackNumber){
+            case 0:
+                return transaction_move1;
+            case 1:
+                return transaction_move2;
+            case 2:
+                return transaction_move3;
+            case 3:
+                return transaction_move4;
+            case 4:
+                return transaction_move5;
+        }
+        return null;
+    }
+
+    @FXML
+    void onSaveChanges() {
+        for (int stackIdentifier = 0; stackIdentifier < MainController.currentStackSize; stackIdentifier++){
+
+            TextField read = getRead(stackIdentifier);
+            TextField write = getWrite(stackIdentifier);
+            TextField move = getMove(stackIdentifier);
+
+            String readValue    = read.getText();
+            String writeValue   = write.getText();
+            String moveValue    = move.getText();
+
+            if (readValue.length() > 1){
+                valueLabel.setText("O primeiro valor do ponto [" + stackIdentifier + "] precisa ser único!");
                 new Sleeper(){
                     @Override
                     public void andDo() {
@@ -116,29 +200,90 @@ public class AddTransitionController {
                     }
                 }.runAfter(2000);
                 return;
+            }
+
+            if (writeValue.length() > 1){
+                valueLabel.setText("O segundo valor do ponto [" + stackIdentifier + "] precisa ser único!");
+                new Sleeper(){
+                    @Override
+                    public void andDo() {
+                        valueLabel.setText("Valor da Transição");
+                    }
+                }.runAfter(2000);
+                return;
+            }
+
+            char theReadChar = readValue.length() == 1 ? readValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
+            char theWriteChar = writeValue.length() == 1 ? writeValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
+            char theMoveChar = moveValue.length() == 1 ? moveValue.charAt(0) : PontoDeFita.EMPTY_CHAR;
+
+            switch (theMoveChar){
+                case 'R':
+                case 'L':
+                case 'S':
+                    break;
+                default:
+                    valueLabel.setText("O terceiro valor do ponto [" + stackIdentifier + "] precisa ser [ L | R | S ]");
+                    new Sleeper(){
+                        @Override
+                        public void andDo() {
+                            valueLabel.setText("Valor da Transição");
+                        }
+                    }.runAfter(2000);
+                    return;
+            }
+
+            Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
+            Aresta aresta = edge.getOrCreateAresta(startVertex);
+
+            aresta.addPontoDeFita(new PontoDeFita(theReadChar,theWriteChar,theMoveChar,stackIdentifier));
+
+            edge.calculateAndSetTextOne();
         }
 
-        Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
-        Aresta aresta = edge.getOrCreateAresta(startVertex);
-
-        char[] allChars = readValue.toCharArray();
-
-        for (char aChar : allChars){
-            aresta.addPontoDeFita(new PontoDeFita(aChar,theWriteChar,theMoveChar));
-        }
-        edge.calculateAndSetTextOne();
         dialog.close();
     }
 
-    @FXML
-    void onCancel(ActionEvent event) {
-        dialog.close();
+    @Override
+    public void onStackSizeChange(int newStackSize) {
+        if (newStackSize >= 2) {
+            transaction_read2.setDisable(false);
+            transaction_write2.setDisable(false);
+            transaction_move2.setDisable(false);
+        } else {
+            transaction_read2.setDisable(true);
+            transaction_write2.setDisable(true);
+            transaction_move2.setDisable(true);
+        }
+
+        if (newStackSize >= 3) {
+            transaction_read3.setDisable(false);
+            transaction_write3.setDisable(false);
+            transaction_move3.setDisable(false);
+        } else {
+            transaction_read3.setDisable(true);
+            transaction_write3.setDisable(true);
+            transaction_move3.setDisable(true);
+        }
+
+        if (newStackSize >= 4) {
+            transaction_read4.setDisable(false);
+            transaction_write4.setDisable(false);
+            transaction_move4.setDisable(false);
+        } else {
+            transaction_read4.setDisable(true);
+            transaction_write4.setDisable(true);
+            transaction_move4.setDisable(true);
+        }
+
+        if (newStackSize >= 5) {
+            transaction_read5.setDisable(false);
+            transaction_write5.setDisable(false);
+            transaction_move5.setDisable(false);
+        } else {
+            transaction_read5.setDisable(true);
+            transaction_write5.setDisable(true);
+            transaction_move5.setDisable(true);
+        }
     }
-
-    @FXML
-    void stateName(ActionEvent event) {
-
-    }
-
-
 }
