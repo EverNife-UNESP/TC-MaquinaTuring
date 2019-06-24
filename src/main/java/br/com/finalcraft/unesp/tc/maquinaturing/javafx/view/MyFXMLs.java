@@ -9,6 +9,7 @@ public class MyFXMLs {
 
     public static Parent main_screen;
     public static Parent state_editor;
+    public static Parent change_tapes;
 
     public static Parent select_edit_trasition;
     public static Parent add_transition;
@@ -25,6 +26,7 @@ public class MyFXMLs {
     public static void loadUpFiles() throws IOException {
         main_screen = FXMLLoader.load(MyFXMLs.class.getResource("/assets/main_screen.fxml"));
         state_editor = FXMLLoader.load(MyFXMLs.class.getResource("/assets/editors/state_editor.fxml"));
+        change_tapes = FXMLLoader.load(MyFXMLs.class.getResource("/assets/tapes/change_tapes.fxml"));
         select_edit_trasition = FXMLLoader.load(MyFXMLs.class.getResource("/assets/editors/select_edit_trasition.fxml"));
         add_transition = FXMLLoader.load(MyFXMLs.class.getResource("/assets/editors/add_transition.fxml"));
         edit_transition_sideonly = FXMLLoader.load(MyFXMLs.class.getResource("/assets/editors/sideonly_edit_transition.fxml"));

@@ -4,6 +4,7 @@ import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.MainController
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.LoaderController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.SaverController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.states.StateEditorController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tapes.ChangeTapesController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.TesterController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.transitions.AddTransitionController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.transitions.SideOnlyEditTransitionController;
@@ -44,6 +45,7 @@ public class JavaFXMain extends Application {
         TesterController.setUp();
         SaverController.setUp();
         LoaderController.setUp();
+        ChangeTapesController.setUp();
 
         MainController.changeStackSizeTo(3);
     }

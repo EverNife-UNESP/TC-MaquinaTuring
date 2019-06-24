@@ -17,6 +17,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AddTransitionController implements StackChangeListener {
 
 
@@ -181,8 +184,13 @@ public class AddTransitionController implements StackChangeListener {
 
     @FXML
     void onSaveChanges() {
-        for (int stackIdentifier = 0; stackIdentifier < MainController.currentStackSize; stackIdentifier++){
 
+        List<PontoDeFita> pontoDeFitaList = new ArrayList<PontoDeFita>();
+        boolean shouldBeAdded = false;
+        Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
+        Aresta aresta = edge.getOrCreateAresta(startVertex);
+        for (int stackIdentifier = 0; stackIdentifier < MainController.currentStackSize; stackIdentifier++){
+            shouldBeAdded = false;
             TextField read = getRead(stackIdentifier);
             TextField write = getWrite(stackIdentifier);
             TextField move = getMove(stackIdentifier);
@@ -232,12 +240,15 @@ public class AddTransitionController implements StackChangeListener {
                     }.runAfter(2000);
                     return;
             }
+            shouldBeAdded = true;
+            pontoDeFitaList.add(new PontoDeFita(theReadChar,theWriteChar,theMoveChar,stackIdentifier));
 
-            Edge edge = GraphController.getGraph().getOrCreateEdge(startVertex, endVertex);
-            Aresta aresta = edge.getOrCreateAresta(startVertex);
+        }
 
-            aresta.addPontoDeFita(new PontoDeFita(theReadChar,theWriteChar,theMoveChar,stackIdentifier));
-
+        if (shouldBeAdded){
+            for (PontoDeFita pontoDeFita : pontoDeFitaList) {
+                aresta.addPontoDeFita(pontoDeFita);
+            }
             edge.calculateAndSetTextOne();
         }
 

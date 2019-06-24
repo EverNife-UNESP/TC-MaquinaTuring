@@ -58,14 +58,18 @@ public class Edge {
         if (bidiretec){
             stringBuilder.append("q" + arestaOne.getSourceId() + " --> q" + arestaOne.getTargetId() + " == ");
             for (PontoDeFita pontoDeFita : arestaOne.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "  ");
+                if (pontoDeFita.isMainPonto()){
+                    stringBuilder.append( pontoDeFita.toString() + "  ");
+                }
             }
             stringBuilder.setLength(stringBuilder.length() - 1);
 
             stringBuilder.append("\n");
             stringBuilder.append("q" + arestaTwo.getSourceId() + " --> q" + arestaTwo.getTargetId() + " == ");
             for (PontoDeFita pontoDeFita : arestaTwo.getPontosDeFita()){
-                stringBuilder.append( pontoDeFita.getRead() + "|" + pontoDeFita.getWrite() + "|" + pontoDeFita.getOrientation() + "  ");
+                if (pontoDeFita.isMainPonto()){
+                    stringBuilder.append( pontoDeFita.toString() + "  ");
+                }
             }
             stringBuilder.setLength(stringBuilder.length() - 1);
         }else {

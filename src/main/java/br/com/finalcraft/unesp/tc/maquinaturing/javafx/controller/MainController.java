@@ -3,6 +3,7 @@ package br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller;
 import br.com.finalcraft.unesp.tc.maquinaturing.GraphController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.LoaderController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.filemanager.SaverController;
+import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tapes.ChangeTapesController;
 import br.com.finalcraft.unesp.tc.maquinaturing.javafx.controller.tester.TesterController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ public class MainController {
 
     public static void changeStackSizeTo(int newSize){
         System.out.println("Change tapes size to " + newSize);
+        GraphController.clear();
         currentStackSize = newSize;
         stackChangeListeners.forEach(listener -> listener.onStackSizeChange(newSize));
     }
@@ -100,7 +102,12 @@ public class MainController {
 
         }
         // :D
-     }
+    }
+
+    @FXML
+    void onAlterarFitas() {
+        ChangeTapesController.show();
+    }
 
     @FXML
     void onTestarAutomato() {

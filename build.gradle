@@ -16,7 +16,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 //apply plugin: 'drawings-gradle-plugin'
 
 group 'br.com.finalcraft'
-version '1.0.1b'
+version '1.0.2a'
 
 sourceCompatibility = 1.8
 
